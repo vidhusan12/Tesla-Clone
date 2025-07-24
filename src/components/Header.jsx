@@ -2,36 +2,42 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { Translate } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
+import { selectCars } from '../features/car/carSlice';
+
 
 const Header = () => {
   const [BurgerStatus, setBurgerStatus] = useState(false);
+  const cars = useSelector(selectCars)
   return (
     <Container>
       <a>
         <img src="/images/logo.svg" alt="" />
       </a>
       <Menu>
-        <a href="#">Model 3</a>
-        <a href="#">Model S</a>
-        <a href="#">Model X</a>
-        <a href="#">Model Y</a>
+        {cars && cars.map((car, index) => (
+          <a key={index} href='#'>{car}</a>
+        ))}
       </Menu>
       <RightMenu>
         <a href="#">Shop</a>
         <a href="#">Tesla Account</a>
-        <CustomMenu onClick={() => setBurgerStatus(true)}/>
+        <CustomMenu onClick={() => setBurgerStatus(true)} />
       </RightMenu>
       <BurgerNav show={BurgerStatus}>
         <CloseWrapper>
-          <CustomClose onClick={() => setBurgerStatus(false)}/>
+          <CustomClose onClick={() => setBurgerStatus(false)} />
         </CloseWrapper>
+        {cars && cars.map((car, index) => (
+          <li key={index}><a href='#'>{car}</a></li>
+        ))}
 
         <li><a href="#">Existing Inventory</a></li>
         <li><a href="#">Used Inventory</a></li>
         <li><a href="#">Trade In</a></li>
         <li><a href="#">Cybertruck</a></li>
         <li><a href="#">Roadaster</a></li>
+
       </BurgerNav>
 
     </Container>
@@ -117,7 +123,7 @@ const CustomClose = styled(CloseIcon)`
   cursor: pointer;
 `;
 
-const CloseWrapper = styled.div `
+const CloseWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
